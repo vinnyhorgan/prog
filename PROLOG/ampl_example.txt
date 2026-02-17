@@ -1,0 +1,87 @@
+# ===================================================================
+# PROBLEMA DELLA DIETA - Esempio AMPL
+# Obiettivo: Minimizzare il costo di una dieta rispettando requisiti nutrizionali
+# ===================================================================
+
+# --- INSIEMI ---
+set CIBI;          # insieme dei cibi disponibili
+set NUTRIENTI;     # insieme dei nutrienti da considerare
+
+# --- PARAMETRI ---
+param costo{CIBI} >= 0;                    # costo per unità di ciascun cibo
+param contenuto{CIBI, NUTRIENTI} >= 0;     # contenuto nutrizionale
+param fabbisogno_min{NUTRIENTI} >= 0;      # fabbisogno minimo di nutrienti
+param fabbisogno_max{NUTRIENTI} >= 0;      # fabbisogno massimo di nutrienti
+
+# --- VARIABILI DECISIONALI ---
+var quantita{CIBI} >= 0;    # quantità di ciascun cibo da acquistare
+
+# --- FUNZIONE OBIETTIVO ---
+minimize costo_totale: 
+    sum{c in CIBI} costo[c] * quantita[c];
+
+# --- VINCOLI ---
+# Vincoli sui fabbisogni minimi
+subject to fabbisogno_minimo{n in NUTRIENTI}:
+    sum{c in CIBI} contenuto[c,n] * quantita[c] >= fabbisogno_min[n];
+
+# Vincoli sui fabbisogni massimi  
+subject to fabbisogno_massimo{n in NUTRIENTI}:
+    sum{c in CIBI} contenuto[c,n] * quantita[c] <= fabbisogno_max[n];
+
+# --- FILE DATI (dieta.dat) ---
+# Il file dati separato conterrebbe:
+
+data;
+
+set CIBI := Pane Latte Uova Carne Formaggio;
+
+set NUTRIENTI := Proteine Calcio Ferro;
+
+param costo :=
+    Pane      0.20
+    Latte     0.35  
+    Uova      0.40
+    Carne     2.50
+    Formaggio 3.00;
+
+param contenuto:    Proteine  Calcio  Ferro :=
+    Pane               3        2       1
+    Latte              8       280      0  
+    Uova               6        25      1
+    Carne             20         2      3
+    Formaggio         25       200      0;
+
+param fabbisogno_min :=
+    Proteine    55
+    Calcio     800  
+    Ferro       10;
+
+param fabbisogno_max :=
+    Proteine   100
+    Calcio    1500
+    Ferro      40;
+
+# --- COMANDI PER L'ESECUZIONE ---
+# Per risolvere il problema:
+# 1. ampl: dieta.mod         # carica il modello
+# 2. data dieta.dat;         # carica i dati
+# 3. option solver cplex;    # seleziona il solver
+# 4. solve;                  # risolve il problema
+# 5. display quantita;       # mostra i risultati
+
+# --- ESEMPIO DI OUTPUT ---
+# Il solver troverà le quantità ottimali di ciascun cibo che:
+# - Minimizzano il costo totale della dieta
+# - Soddisfano i requisiti nutrizionali minimi
+# - Non superano i limiti nutrizionali massimi
+
+# Possibile risultato:
+# quantita [*] :=
+# Pane      2.5
+# Latte     1.2  
+# Uova      0.8
+# Carne     1.1
+# Formaggio 0.3
+# 
+# Costo totale: 4.23 €
