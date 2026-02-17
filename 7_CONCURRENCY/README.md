@@ -1,7 +1,7 @@
-Argomenti: Supporto per la programmazione concorrente nei linguaggi di programmazione.  Coroutines.
+**Argomenti**: Supporto per la programmazione concorrente nei linguaggi di programmazione.  Coroutines.
 
-Riferimenti: Sebesta, Cap 13, 9.11
+**Riferimenti**: Sebesta, Cap 13, 9.11
 
-SLIDE:
+**SLIDE**:
 
-- [Intro](https://elearning.unimib.it/pluginfile.php/2055210/mod_resource/content/1/concurrent_programming_revised.html)
+- [Concorrenza nei linguaggi di Programmazione](https://elearning.unimib.it/pluginfile.php/2055210/mod_resource/content/1/concurrent_programming_revised.html)
