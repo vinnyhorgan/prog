@@ -6,7 +6,7 @@
 
 1. Dire cosa fa genericamente la funzione lisp data e dire che risultato fa con un certo input 
 
-2. Definzione adt, fai esempio (no codice) di adt supportabile in java per gestire "libreria" (nel senso di scaffale) che contiene libri/cd/altri oggetti.
+2. Definizione adt, fai esempio (no codice) di adt supportabile in java per gestire "libreria" (nel senso di scaffale) che contiene libri/cd/altri oggetti.
 
 3. scrivere codice java, gestione pista atterraggio, 4 metodi, atterraggio priorità su decollo.
 

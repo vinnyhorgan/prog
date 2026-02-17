@@ -4,7 +4,7 @@ Topics: organization, rules, exams modalities.
 Introduction to Programming Languages 
  
 **Argomenti**: organizzazione, regolamento, modalità d'esame.
-Introduzione ai linguaggi di programmazione: perchè studiarli, come classificarli e valutarli
+Introduzione ai linguaggi di programmazione: perché studiarli, come classificarli e valutarli
  
 **Riferimenti**: Sebesta, Cap. 1, Cap. 2
 

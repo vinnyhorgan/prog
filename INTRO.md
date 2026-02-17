@@ -20,6 +20,6 @@ Nota finale: tutti gli esiti saranno caricati nel sistema: voto, ritirato, assen
 
 ## Nota (studenti Anni Accademici precedenti al corrente)
 
-Il programma dell'Anno Accedemico 2025-2026 è completamente rinnovato rispetto agli anni precedenti.  Il programma delle prove scritte per gli studenti degli anni precedenti sarà coerente con il programma seguito fino all'AA 2024-2025 per i prossimi 3 anni accademici, mentre i progetti saranno gestiti come sempre, non essendo previste variazioni al programma per la parte di laboratorio.
+Il programma dell'Anno Accademico 2025-2026 è completamente rinnovato rispetto agli anni precedenti.  Il programma delle prove scritte per gli studenti degli anni precedenti sarà coerente con il programma seguito fino all'AA 2024-2025 per i prossimi 3 anni accademici, mentre i progetti saranno gestiti come sempre, non essendo previste variazioni al programma per la parte di laboratorio.
 
 Gli studenti degli anni precedenti che devono ancora passare l'esame di Linguaggi di Programmazione da 12 crediti (su tre moduli: Paradigmi di LP, Linguaggi e Computabilità e Laboratorio di LP) possono soddisfare i requisiti per Paradigmi di LP e Laboratorio di LP passando le prove del corso di Linguaggi di Programmazione corrente da 8 crediti. Lo stesso vale per gli studenti che devono ancora passare l'esame di Linguaggi da 6 crediti. Caveat: i contenuti delle prove rifletteranno i contenuti del corso LP attuale; non saranno predisposte prove speciali per gli studenti degli anni precedenti.
