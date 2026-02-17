@@ -1,12 +1,10 @@
 Il codice C/C++, (Common) Lisp, Haskell, Javascript, Python, R, Julia ed il codice Prolog devono essere editati seguendo una serie minima di regole convenzionali al fine di renderli il più leggibili possibile. In particolare valgono le regole convenzionali seguenti.
 
-1. Il testo non deve MAI superare le 80 colonne di ampiezza.
+1. Il testo non deve **MAI** superare le 80 colonne di ampiezza.
 
 2. Il testo deve essere correttamente indentato.
 
 3. Gli operatori in C/C++ e Prolog (e Python, R, Haskell, Julia, COBOL, Javascript, etc) vanno sempre delimitati correttamente: spazi attorno agli operatori eccezion fatta per le virgole, che hanno solo uno spazio dopo.
-
- 
 
 Qualunque codice presentato che non segue queste semplici regole verrà cassato.
 

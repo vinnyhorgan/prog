@@ -1,6 +1,6 @@
 # Linguaggi di programmazione
 
-Si ricorda a tutti gli studenti che il corso di Linguaggi di Programmazione è un prerequisito per accedere allo "stage". Nessuno studente sarà ammesso allo "stage" se non avrà passato tutti gli esami del primo e del secondo anno.
+Si ricorda a tutti gli studenti che il corso di Linguaggi di Programmazione è un prerequisito per accedere allo "stage". Nessuno studente sarà ammesso allo "stage" se non avrà passato **tutti** gli esami del primo e del secondo anno.
 
 Si noti inoltre che è necessario essere iscritti al corso Moodle per poter accedere ai contenuti.
 
