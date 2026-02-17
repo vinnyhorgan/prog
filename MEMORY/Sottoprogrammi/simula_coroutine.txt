@@ -1,0 +1,49 @@
+Begin
+   Class Produttore;
+   Begin
+      Integer n;
+      For n := 1 Step 1 Until 5 Do
+      Begin
+         OutText("Produttore: genera numero ");
+         OutInt(n, 0);
+         OutImage;
+         Detach;  ! Passa il controllo al consumatore
+      End;
+      OutText("Produttore: finito");
+      OutImage;
+   End ***Produttore***;
+
+   Class Consumatore;
+   Begin
+      Integer i;
+      For i := 1 Step 1 Until 5 Do
+      Begin
+         OutText("  Consumatore: riceve e processa dato");
+         OutImage;
+         Detach;  ! Passa il controllo al produttore
+      End;
+      OutText("  Consumatore: finito");
+      OutImage;
+   End ***Consumatore***;
+
+   Ref(Produttore) prod;
+   Ref(Consumatore) cons;
+
+   ! Crea le coroutine
+   prod :- New Produttore;
+   cons :- New Consumatore;
+
+   ! Avvia l'esecuzione alternata
+   Resume(prod);
+   While True Do
+   Begin
+      Resume(cons);
+      If Terminated(cons) Then Goto fine;
+      Resume(prod);
+      If Terminated(prod) Then Goto fine;
+   End;
+
+   fine:
+   OutText("Programma terminato");
+   OutImage;
+End;
