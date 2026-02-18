@@ -329,115 +329,117 @@ La seconda parte del capitolo “_Collections_” di “_Practical Common Lisp_�
 
 (^7) Non dovrebbe sfuggire l’analogia con le “tabelle” di una base di dati relazionale.
 
-### Le Hash Tables dei grafi in Common Lisp per il progetto
+## Le Hash Tables dei grafi in Common Lisp per il progetto
 
 Tornando alle hash-tables per il progetto, esse vanno definite nel seguente modo^8.
 
-**(defparameter *vertices* (make-hash-table :test #’equal))
+```lisp
+(defparameter *vertices* (make-hash-table :test #'equal))
 ...
-(defparameter *graphs* (make-hash-table :test #’equal))
-... ; Etc. Etc. Etc.**
+(defparameter *graphs* (make-hash-table :test #'equal))
+... ; Etc. Etc. Etc.
+```
 
-Il parametro passato per keyword, :test, è la funzione che viene usata per testare se un certo
-elemento è una chiave nella hash-table; nel caso in questione si usa la funzione **equal**.
+Il parametro passato per keyword, **:test**, è la funzione che viene usata per testare se un certo elemento è una chiave nella hash-table; nel caso in questione si usa la funzione **equal**.
 
-Se si vuole aggiungere un grafo alla hash-table *graphs* si usa il codice qui sotto
+Se si vuole aggiungere un grafo alla hash-table \*graphs\* si usa il codice qui sotto
 
-**(setf (gethash ’il-mio-grafettino *graphs*) ...)**
+```lisp
+(setf (gethash 'il-mio-grafettino *graphs*) ...)
+```
 
 Si pazienti ancora un attimo riguardo il valore che si inserirà nella hash-table.
 
 ## Interfaccia Common Lisp per la manipolazione di grafi
 
-Seguendo la falsariga dell’interfaccia Prolog, per il Common Lisp si dovrà predisporre l’interfaccia
-descritta qui sotto.
+Seguendo la falsariga dell’interfaccia Prolog, per il Common Lisp si dovrà predisporre l’interfaccia descritta qui sotto.
 
-```
-is-graph graph-id → graph-id or NIL
-Questa funzione ritorna il graph-id stesso se questo grafo è già stato creato, oppure NIL se no.
-Una sua implementazione è semplicmente
+**is-graph** graph-id → graph-id or NIL
+
+Questa funzione ritorna il graph-id stesso se questo grafo è già stato creato, oppure NIL se no. Una sua implementazione è semplicmente
+
+```lisp
 (defun is-graph (graph-id)
-;; graph-id è un atomo: un simbolo (non NIL) o un intero.
-( gethash graph-id *graphs*))
+  ;; graph-id è un atomo: un simbolo (non NIL) o un intero.
+  (gethash graph-id *graphs*))
 ```
-```
-new-graph graph-id → graph-id
-Questa funzione genera un nuovo grafo e lo inserisce nel data base (ovvero nella hash-table)
-dei grafi. Una sua implementazione potrebbe essere la seguente:
-```
-```
-(defun new-graph (graph-id)
-;; graph-id è un atomo: un simbolo (non NIL) o un intero.
-(or ( gethash graph-id *graphs*)
-( setf ( gethash graph-id *graphs*) graph-id)))
-```
-##### Esempio
 
+**new-graph** graph-id → graph-id
+
+Questa funzione genera un nuovo grafo e lo inserisce nel data base (ovvero nella hash-table) dei grafi. Una sua implementazione potrebbe essere la seguente:
+
+```lisp
+(defun new-graph (graph-id)
+  ;; graph-id è un atomo: un simbolo (non NIL) o un intero.
+  (or (gethash graph-id *graphs*)
+    (setf (gethash graph-id *graphs*) graph-id)))
 ```
-cl-prompt> (new-graph ’il-mio-grafettino)
+
+### Esempio
+
+```lisp
+cl-prompt> (new-graph 'il-mio-grafettino)
 IL-MIO-GRAFETTINO
 ```
-```
-cl-prompt> (is-graph ’il-mio-grafettino)
+
+```lisp
+cl-prompt> (is-graph 'il-mio-grafettino)
 IL-MIO-GRAFETTINO
 ```
-```
-cl-prompt> (is-graph ’G2)
+
+```lisp
+cl-prompt> (is-graph 'G2)
 NIL
 ```
-```
-delete-graph graph-id → NIL
-Rimuove	l’intero	grafo	dal	sistema	(vertici	archi	etc);	ovvero	rimuove	tutte	le	istanze	
-presenti	nei	data	base	(ovvero	nelle	hash-tables)	del	sistema.
-new-vertex graph-id vertex-id → vertex-rep
-Aggiunge	un	nuovo	vertice	 vertex-id al	grafo	 graph-id .		Notate	come	la	
-rappresentazione	di	un	vertice	associ	un	vertice	ad	un	grafo	(o	più).		Una	possibile	
-implementazione	di	new-vertex	potrebbe	essere	la	seguente:
-(defun new-vertex ( graph-id vertex-id)
-;; graph-id è un atomo: un simbolo (non NIL) o un intero.
-```
-(^8) NB. Ogni volta che si ricarica il codice, le suddette hash-tables sono re-instaziate e tutto quello che
-contenevano prima, garbage-collected. È un effetto collaterale di defparameter.
 
+**delete-graph** graph-id → NIL
 
-```
-;; vertex-id pure.
-(setf ( gethash (list ’vertex graph-id vertex-id)
-*vertices* ))
-(list ’vertex graph-id vertex-id)))
-```
-##### graph-vertices graph-id → vertex-rep-list
+Rimuove l’intero grafo dal sistema (vertici archi etc); ovvero rimuove tutte le istanze presenti nei data base (ovvero nelle hash-tables) del sistema.
 
+**new-vertex** graph-id vertex-id → vertex-rep
+
+Aggiunge un nuovo vertice **vertex-id** al grafo **graph-id**. Notate come la rappresentazione di un vertice associ un vertice ad un grafo (o più). Una possibile implementazione di new-vertex potrebbe essere la seguente:
+
+```lisp
+(defun new-vertex (graph-id vertex-id)
+  ;; graph-id è un atomo: un simbolo (non NIL) o un intero.
+  ;; vertex-id pure.
+  (setf (gethash (list 'vertex graph-id vertex-id) *vertices*)
+    (list 'vertex graph-id vertex-id)))
 ```
+
+(^8) NB. Ogni volta che si ricarica il codice, le suddette hash-tables sono re-instaziate e tutto quello che contenevano prima, garbage-collected. È un effetto collaterale di **defparameter**.
+
+**graph-vertices** graph-id → vertex-rep-list
+
 Questa funzione torna una lista di vertici del grafo.
-```
-##### new-arc graph-id vertex-id vertex-id &optional weight → arc-
 
-##### rep
+**new-arc** graph-id vertex-id vertex-id &optional weight → arc-rep
 
-```
-Questa funzione aggiunge un arco del grafo graph-id nella hash-table *arcs*. La
-rappresentazione di un arco è
+Questa funzione aggiunge un arco del grafo graph-id nella hash-table \*arcs\*. La rappresentazione di un arco è
+
+```lisp
 (arc graph-id u v weight)
 ```
-##### graph-arcs graph-id → arc-rep-list
 
-```
-Questo funzione ritorna una lista una lista di tutti gli archi presenti in graph-id.
-```
-##### graph-vertex-neighbors graph-id vertex-id → vertex-rep-list
+**graph-arcs** graph-id → arc-rep-list
 
-#### Questa funzione ritorna una lista vertex-rep-list contenente gli archi,
+Questa funzione ritorna una lista di tutti gli archi presenti in graph-id.
 
-```
+**graph-vertex-neighbors** graph-id vertex-id → vertex-rep-list
+
+Questa funzione ritorna una lista vertex-rep-list contenente gli archi,
+
+```lisp
 (arc graph-id vertex-id N W),
 ```
-```
+
 che portano ai vertici N immediatamente raggiungibili da vertex-id.
-graph-print graph-id
-Questa funzione stampa alla console dell’interprete Common Lisp una lista dei vertici e degli
-archi del grafo graph-id.
-```
+
+**graph-print** graph-id
+
+Questa funzione stampa alla console dell’interprete Common Lisp una lista dei vertici e degli archi del grafo graph-id.
+
 ## SSSP in Common Lisp
 
 Anche in Common Lisp dovrete implementare un’interfaccia standardizzata, sempre sulla falsariga di
