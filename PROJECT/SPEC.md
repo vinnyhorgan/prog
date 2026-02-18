@@ -292,58 +292,42 @@ Il consiglio è di implementare la libreria MINHEAP, e di assicurarsi che funzio
 
 # Common Lisp
 
-L’implementazione in Common Lisp richiede, come immaginabile, l’utilizzo di assegnamenti per
-modificare lo stato del sistema^6.
+L’implementazione in Common Lisp richiede, come immaginabile, l’utilizzo di assegnamenti per modificare lo stato del sistema^6.
 
 ## Grafi in Common Lisp
 
-Vi sono diversi modi di rappresentare i grafi in Common Lisp. Naturalmente è possibile adottare le
-rappresentazioni standard a _lista di adiacenza_ ( _adjacency list_ ) o a _matrice di adiacenza_ ( _adjacency
-matrix_ ), ma si cercherà di adottare una rappresentazione ibrida più simile alla rappresentazione Prolog
-per, si spera, semplificare il lavoro.
+Vi sono diversi modi di rappresentare i grafi in Common Lisp. Naturalmente è possibile adottare le rappresentazioni standard a _lista di adiacenza_ (_adjacency list_) o a _matrice di adiacenza_ (_adjacency matrix_), ma si cercherà di adottare una rappresentazione ibrida più simile alla rappresentazione Prolog per, si spera, semplificare il lavoro.
 
-L’idea principale è di avere dei vertici rappresentati da _atomi_ ( _simboli_ e _numeri interi_ ) e di definire
-delle _hash-tables_ che useranno questi atomi come chiavi. De facto, queste hash-tables si
-comporteranno come la knowledge base di Prolog^7.
+L’idea principale è di avere dei vertici rappresentati da _atomi_ (_simboli_ e _numeri interi_) e di definire delle _hash-tables_ che useranno questi atomi come chiavi. De facto, queste hash-tables si comporteranno come la knowledge base di Prolog^7.
 
-Di conseguenza assumiamo di avere le seguenti hash-tables (si vedrà dopo come crearle e
-manipolarle).
+Di conseguenza assumiamo di avere le seguenti hash-tables (si vedrà dopo come crearle e manipolarle).
 
-***vertices*
-*arcs*
-*graphs*
-*visited*
-*distances*
-*previous***
+- \*vertices\*
+- \*arcs\*
+- \*graphs\*
+- \*visited\*
+- \*distances\*
+- \*previous\*
 
-La convenzione di usare asterischi attorno ai nomi è una pura convenzione dei programmatori
-Common Lisp.
+La convenzione di usare asterischi attorno ai nomi è una pura convenzione dei programmatori Common Lisp.
 
 ## Hash Tables in Common Lisp
 
-Le hash-tables sono strutture dati primitive in Common Lisp. Le funzioni che le manipolano sono
-essenzialmente le seguenti.
+Le hash-tables sono strutture dati primitive in Common Lisp. Le funzioni che le manipolano sono essenzialmente le seguenti.
 
-```
-make-hash-table : crea una hash-table.
-clrhash : rimuove ogni coppia chiave/valore dalla hash-table.
-```
-```
-gethash : ritorna il valore associato ad una chiave, o NIL.
-remhash: rimuove il valore associato ad una chiave.
-maphash : come mapcar ma prende una funzione di due argomenti (uno per la chiave ed
-uno per il valore) ed una hash-table ed applica la funzione ad ognuna delle coppie.
-```
-Per modificare il contenuto di una hash-table, oltre a clrhash, si usa l’operatore di assegnamento,
-**setf** , in congiunzione con gethash.
+- **make-hash-table**: crea una hash-table.
+- **clrhash**: rimuove ogni coppia chiave/valore dalla hash-table.
+- **gethash**: ritorna il valore associato ad una chiave, o NIL.
+- **remhash**: rimuove il valore associato ad una chiave.
+- **maphash**: come **mapcar** ma prende una funzione di due argomenti (uno per la chiave ed uno per il valore) ed una hash-table ed applica la funzione ad ognuna delle coppie.
 
-La seconda parte del capitolo “ _Collections_ ” di “ _Practical Common Lisp_ ” di Seibel contiene un’altra
-introduzione alle hash-tables (http://www.gigamonkeys.com/book/collections.html).
+Per modificare il contenuto di una hash-table, oltre a **clrhash**, si usa l’operatore di assegnamento, **setf** , in congiunzione con **gethash**.
+l
+La seconda parte del capitolo “_Collections_” di “_Practical Common Lisp_” di Seibel contiene un’altra introduzione alle hash-tables [qua](http://www.gigamonkeys.com/book/collections.html).
 
-(^6) É possibile costruire queste strutture dati in modo funzionale e senza effetti collaterali, ma risulta
-tanto complicato quanto elegante.
+(^6) É possibile costruire queste strutture dati in modo funzionale e senza effetti collaterali, ma risulta tanto complicato quanto elegante.
+
 (^7) Non dovrebbe sfuggire l’analogia con le “tabelle” di una base di dati relazionale.
-
 
 ### Le Hash Tables dei grafi in Common Lisp per il progetto
 
