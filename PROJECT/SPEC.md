@@ -211,69 +211,84 @@ Come anticipato, l’implementazione dell’algoritmo di Dijkstra ha bisogno di 
 
 # MINHEAP in Prolog
 
-Un MINHEAP è una struttura dati che prevede le sequenti operazioni: NEWHEAP, INSERT, HEAD,
-EXTRACT, MODIFYKEY. Si rimanda a [CLR+09] Capitolo 6 e Sedgewick e Wayne _Algorithms_ [SW11]
-Capitolo 2.4 per la spiegazione del funzionamento di queste operazioni.
+Un MINHEAP è una struttura dati che prevede le sequenti operazioni: NEWHEAP, INSERT, HEAD, EXTRACT, MODIFYKEY. Si rimanda a [CLR+09] Capitolo 6 e Sedgewick e Wayne _Algorithms_ [SW11] Capitolo 2.4 per la spiegazione del funzionamento di queste operazioni.
 
 La libreria Prolog che implementa il MINHEAP avrà l’API seguente.
 
+```prolog
+new_heap(H) .
 ```
-new_heap(H).
-Questo predicato inserisce un nuovo heap nella base-dati Prolog. Una sua semplice
-implementazione potrebbe essere
-```
-```
-new_heap(H) :- heap(H, _S), !.
-new_heap(H) :- assert(heap(H, 0)), !.
-```
-Notate che il predicato heap(H, S) mantiene la dimensione corrente dello heap nel secondo
-argomento.
 
+Questo predicato inserisce un nuovo heap nella base-dati Prolog. Una sua semplice implementazione potrebbe essere
+
+```prolog
+new_heap(H) :- heap(H, _S), ! .
+new_heap(H) :- assert(heap(H, 0)), ! .
 ```
-delete_heap(H).
+
+Notate che il predicato **heap(H, S)** mantiene la dimensione corrente dello heap nel secondo argomento.
+
+```prolog
+delete_heap(H) .
+```
+
 Rimuove tutto lo heap (incluse tutte le “entries”) dalla base-dati Prolog.
-heap_size(H, S).
-Questo predicato è vero quanto S è la dimensione corrente dello heap. Una semplice
-implementazione potrebbe essere:
-```
-```
-heap_size(H, S) :- heap(H, S).
-```
-```
-empty(H).
-Questo predicato è vero quando lo heap H non contiene elementi.
-not_empty(H).
-Questo predicato è vero quando lo heap H contiene almeno un elemento.
-```
-Un MINHEAP mantiene delle associazioni tra chiavi K e valori V. Si suggerisce di mantenere queste
-associazioni nella base-dati Prolog mediate predicati heap_entry(H, P, K, V), dove P è la
-“posizione” nello heap H. I fatti heap_entry/4 dovranno essere asseriti e ritrattati a seconda della
-bisogna durante le operazioni di ristrutturazione del MINHEAP.
 
-```
-head(H, K, V).
-Il predicato head/3 è vero quando l’elemento dello heap H con chiave minima K è V.
-insert(H, K, V).
-Il predicato insert/3 è vero quando l’elemento V è inserito nello heap H con chiave K.
-Naturalmente, lo heap H dovrà essere ristrutturato in modo da mantenere la proprietà che head(H,
-HK, HV) sia vero per HK minimo e che la “heap property” sia mantenuta ad ogni nodo dello heap.
-extract(H, K, V).
-Il predicato extract/3 è vero quando la coppia K, V con K minima, è rimossa dallo heap H.
-Naturalmente, lo heap H dovrà essere ristrutturato in modo da mantenere la proprietà che head(H,
-HK, HV) sia vero per HK minimo e che la “heap property” sia mantenuta ad ogni nodo dello heap.
-modify_key(H, NewKey, OldKey, V).
-Il predicato modify_key/ 4 è vero quando la chiave OldKey (associata al valore V) è sostituita
-da NewKey. Naturalmente, lo heap H dovrà essere ristrutturato in modo da mantenere la proprietà
+```prolog
+heap_size(H, S) .
 ```
 
+Questo predicato è vero quanto **S** è la dimensione corrente dello heap. Una semplice implementazione potrebbe essere:
+
+```prolog
+heap_size(H, S) :- heap(H, S) .
 ```
-che head(H, HK, HV) sia vero per HK minimo e che la “heap property” sia mantenuta ad ogni
-nodo dello heap.
-list_heap(H).
-Il predicato richiama listing/1 per stampare sulla console Prolog lo stato interno dello heap.
+
+```prolog
+empty(H) .
 ```
-Il consiglio è di implementare la libreria MINHEAP, e di assicurarsi che funzioni, prima di passare ad
-implementare l’algoritmo di Dijkstra.
+
+Questo predicato è vero quando lo heap **H** non contiene elementi.
+
+```prolog
+not_empty(H) .
+```
+
+Questo predicato è vero quando lo heap **H** contiene almeno un elemento.
+
+Un MINHEAP mantiene delle associazioni tra chiavi **K** e valori **V**. Si suggerisce di mantenere queste associazioni nella base-dati Prolog mediate predicati **heap_entry(H, P, K, V)**, dove **P** è la “posizione” nello heap **H**. I fatti **heap_entry/4** dovranno essere asseriti e ritrattati a seconda della bisogna durante le operazioni di ristrutturazione del MINHEAP.
+
+```prolog
+head(H, K, V) .
+```
+
+Il predicato **head/3** è vero quando l’elemento dello heap **H** con chiave minima **K** è **V**.
+
+```prolog
+insert(H, K, V) .
+```
+
+Il predicato **insert/3** è vero quando l’elemento **V** è inserito nello heap **H** con chiave **K**. Naturalmente, lo heap **H** dovrà essere ristrutturato in modo da mantenere la proprietà che **head(H, HK, HV)** sia vero per **HK** minimo e che la “heap property” sia mantenuta ad ogni nodo dello heap.
+
+```prolog
+extract(H, K, V) .
+```
+
+Il predicato **extract/3** è vero quando la coppia **K**, **V** con **K** minima, è rimossa dallo heap **H**. Naturalmente, lo heap **H** dovrà essere ristrutturato in modo da mantenere la proprietà che **head(H, HK, HV)** sia vero per **HK** minimo e che la “heap prosperty” sia mantenuta ad ogni nodo dello heap.
+
+```prolog
+modify_key(H, NewKey, OldKey, V) .
+```
+
+Il predicato **modify_key/4** è vero quando la chiave **OldKey** (associata al valore **V**) è sostituita da **NewKey**. Naturalmente, lo heap **H** dovrà essere ristrutturato in modo da mantenere la proprietà che **head(H, HK, HV)** sia vero per **HK** minimo e che la “heap property” sia mantenuta ad ogni nodo dello heap.
+
+```prolog
+list_heap(H) .
+```
+
+Il predicato richiama **listing/1** per stampare sulla console Prolog lo stato interno dello heap.
+
+Il consiglio è di implementare la libreria MINHEAP, e di assicurarsi che funzioni, prima di passare ad implementare l’algoritmo di Dijkstra.
 
 # Common Lisp
 
