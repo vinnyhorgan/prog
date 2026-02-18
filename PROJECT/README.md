@@ -4,7 +4,7 @@ Vi preghiamo di segnalarci quanto prima imprecisioni ed errori nel testo; nel te
 
 Potete formare gruppi di al massimo tre persone, non importa di quale turno. Consegne singole o in coppia avranno un bonus.
 
-La data di scadenza per la consegna **è il 28 febbraio 2026 alle ore 23:55**.
+La data di scadenza per la consegna è il **28 febbraio 2026** alle ore 23:55.
 
 **Leggere attentamente tutte le istruzioni di consegna.**
 
