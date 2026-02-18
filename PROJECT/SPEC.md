@@ -169,47 +169,45 @@ NB i predicati **distance/3**, **visited/2** e **previous/3** sono “dinamici�
 change_distance(G, V, NewDist) .
 ```
 
-Questo predicato ha sempre successo con due effetti collaterali: prima tutte le istanze di
-distance(G, V, _) sono ritirate dalla base-dati Prolog, e quindi distance(G, V,
-NewDist) è asserita.
-change_previous(G, V, U).
-Questo predicato ha successo con due effetti collaterali: prima tutte le istanze di
-previous(G, V, _) sono ritirate dalla base-dati Prolog, e quindi previous(G, V, U) è
-asserita.
-```
-I predicati che servono per risolvere il problema SSSP sono dijkstra_sssp/1 e
-shortest_path/3.
+Questo predicato ha sempre successo con due effetti collaterali: prima tutte le istanze di **distance(G, V, _)** sono ritirate dalla base-dati Prolog, e quindi **distance(G, V, NewDist)** è asserita.
 
+```prolog
+change_previous(G, V, U) .
 ```
-dijkstra_sssp(G, Source).
-Questo predicato ha successo con un effetto collaterale. Dopo la sua prova, la base-dati Prolog ha
-al suo interno i predicati distance(G, V, D) per ogni V appartenente a G; la base-dati Prolog
-contiene anche i predicati previous(G, V, U) e visited(V) per ogni V, ottenuti durante le
-iterazioni dell’algoritmo di Dijkstra. Naturalmente i predicati
-distance(G, V, D) e previous(G, V, U) devono essere corretti rispetto alla soluzione
-del problema SSSP.
-shortest_path(G, Source, V, Path).
+
+Questo predicato ha successo con due effetti collaterali: prima tutte le istanze di **previous(G, V, _)** sono ritirate dalla base-dati Prolog, e quindi **previous(G, V, U)** è asserita.
+
+I predicati che servono per risolvere il problema SSSP sono **dijkstra_sssp/1** e **shortest_path/3**.
+
+```prolog
+dijkstra_sssp(G, Source) .
+```
+
+Questo predicato ha successo con un effetto collaterale. Dopo la sua prova, la base-dati Prolog ha al suo interno i predicati **distance(G, V, D)** per ogni **V** appartenente a **G**; la base-dati Prolog contiene anche i predicati **previous(G, V, U)** e **visited(V)** per ogni **V**, ottenuti durante le iterazioni dell’algoritmo di Dijkstra. Naturalmente i predicati **distance(G, V, D)** e **previous(G, V, U)** devono essere corretti rispetto alla soluzione del problema SSSP.
+
+```prolog
+shortest_path(G, Source, V, Path) .
+```
+
 Questo predicato è vero quando Path è una lista di archi
-```
-```
+
+```prolog
 [arc(G, Source, N1, W1),
 arc(G, N1, N2, W2),
 ...,
 arc(G, NK, V, Wk)]
 ```
-```
-che rappresenta il “cammino minimo” da Source a V.
-```
+
+che rappresenta il “cammino minimo” da **Source** a **V**.
 
 Una tipica interrogazione del sistema potrebbe essere la seguente:
 
-```
+```prolog
 ?- dijkstra_sssp(my_graph, s),
-shortest_path(my_graph, s, v42, ShortestPath).
+shortest_path(my_graph, s, v42, ShortestPath) .
 ```
-Come anticipato, l’implementazione dell’algoritmo di Dijkstra ha bisogno di un’implementazione
-funzionante di una coda a priorità ( _priority queue_ ), in altre parole di un MINHEAP. Nel seguito si
-descriverà l’API di una libreria Prolog che implementa un MINHEAP.
+
+Come anticipato, l’implementazione dell’algoritmo di Dijkstra ha bisogno di un’implementazione funzionante di una coda a priorità (_priority queue_), in altre parole di un MINHEAP. Nel seguito si descriverà l’API di una libreria Prolog che implementa un MINHEAP.
 
 # MINHEAP in Prolog
 
