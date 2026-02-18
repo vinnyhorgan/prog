@@ -48,94 +48,127 @@ Una volta scelta una rappresentazione in memoria di un grafo (_diretto_) è semp
 
 ## Interfaccia Prolog per la manipolazione di grafi
 
-L’interfaccia richiesta è descritta nel seguito. Si noti come ogni predicato mette in relazione un
-identificatore speciale che denota un particolare grafo. Si noti anche che tutti i predicati richiesti
-presumono l’utilizzo delle primitive di manipolazione della base di dati Prolog: assert,
-retractall e retract in particolare^3.
+L’interfaccia richiesta è descritta nel seguito. Si noti come ogni predicato mette in relazione un identificatore speciale che denota un particolare grafo. Si noti anche che tutti i predicati richiesti presumono l’utilizzo delle primitive di manipolazione della base di dati Prolog: **assert**, **retractall** e **retract** in particolare^3.
 
+```prolog
+new_graph(G) .
 ```
-new_graph(G).
-Questo predicato inserisce un nuovo grafo nella base-dati Prolog. Una sua semplice
-implementazione potrebbe essere
-```
-```
-new_graph(G) :- graph(G), !.
-new_graph(G) :- assert(graph(G)), !.
-```
-##### Esempio
 
+Questo predicato inserisce un nuovo grafo nella base-dati Prolog. Una sua semplice implementazione potrebbe essere
+
+```prolog
+new_graph(G) :- graph(G), ! .
+new_graph(G) :- assert(graph(G)), ! .
 ```
-?- new_graph(il_mio_grafettino).
+
+### Esempio
+
+```prolog
+?- new_graph(il_mio_grafettino) .
 true
 ```
-```
-?- graph(G).
+
+```prolog
+?- graph(G) .
 G = il_mio_grafettino
 ...
-delete_graph(G).
-Rimuove tutto il grafo (vertici e archi inclusi) dalla base-dati Prolog.
-new_vertex(G, V).
-Aggiunge il vertice V nella base-dati Prolog. N.B. si richiede che il predicato che rappresenta i
-vertici, da aggiungere alla base-dati Prolog, sia vertex(G, V). Anche in questo caso dovrete
-usare i predicati di manipolazione della base-dati Prolog. Notate che è, in generale, permesso che
-uno stesso vertice possa appartenere a più grafi distinti.
-vertices(G, Vs).
-Questo predicato è vero quanto Vs è una lista contenente tutti i vertici di G^4.
-list_vertices(G).
-Questo predicato stampa alla console dell’interprete Prolog una lista dei vertici del grafo G (usate
-listing/1).
-new_arc(G, U, V, Weight).
-Aggiunge un arco del grafo G alla base dati Prolog; il peso è un numero qualunque non-negativo^5.
-N.B. è richiesto che il predicato che rappresenta gli archi, da aggiungere alla base-dati Prolog, sia
-arc(G, U, V, Weight). Per comodità potete anche costruire una versione new_arc/ 3 così
-definita:
-new_arc(G, U, V) :- new_arc(G, U, V, 1).
-arcs(G, Es).
-Questo predicato è vero quando Es è una lista di tutti gli archi presenti in G.
-neighbors(G, V, Ns).
-Questo predicato è vero quando V è un vertice di G e Ns è una lista contenente gli archi, arc(G,
-V, N, W), che portano ai vertici N immediatamente raggiungibili da V.
 ```
-(^3) Attenzione: i predicati di manipolazione della base-dati Prolog possono lasciare delle alternative negli
-stack di esecuzione; in questo caso potrebbe essere che il sistema Prolog possa generare delle soluzioni
-extra. Cercate di evitarle.
-(^4) Il predicato standard findall/3 vi sarà utile in questo e altri casi.
+
+---
+
+```prolog
+delete_graph(G) .
+```
+
+Rimuove tutto il grafo (vertici e archi inclusi) dalla base-dati Prolog.
+
+```prolog
+new_vertex(G, V) .
+```
+
+Aggiunge il vertice V nella base-dati Prolog. N.B. si richiede che il predicato che rappresenta i vertici, da aggiungere alla base-dati Prolog, sia **vertex(G, V)**. Anche in questo caso dovrete usare i predicati di manipolazione della base-dati Prolog. Notate che è, in generale, permesso che uno stesso vertice possa appartenere a più grafi distinti.
+
+```prolog
+vertices(G, Vs) .
+```
+
+Questo predicato è vero quanto Vs è una lista contenente tutti i vertici di G^4.
+
+```prolog
+list_vertices(G) .
+```
+
+Questo predicato stampa alla console dell’interprete Prolog una lista dei vertici del grafo **G** (usate **listing/1**).
+
+```prolog
+new_arc(G, U, V, Weight) .
+```
+
+Aggiunge un arco del grafo G alla base dati Prolog; il peso è un numero qualunque non-negativo^5. N.B. è richiesto che il predicato che rappresenta gli archi, da aggiungere alla base-dati Prolog, sia **arc(G, U, V, Weight)**. Per comodità potete anche costruire una versione **new_arc/3** così definita:
+
+```prolog
+new_arc(G, U, V) :- new_arc(G, U, V, 1) .
+```
+
+```prolog
+arcs(G, Es) .
+```
+
+Questo predicato è vero quando **Es** è una lista di tutti gli archi presenti in **G**.
+
+```prolog
+neighbors(G, V, Ns) .
+```
+
+Questo predicato è vero quando **V** è un vertice di **G** e **Ns** è una lista contenente gli archi, **arc(G, V, N, W)**, che portano ai vertici **N** immediatamente raggiungibili da **V**.
+
+(^3) Attenzione: i predicati di manipolazione della base-dati Prolog possono lasciare delle alternative negli stack di esecuzione; in questo caso potrebbe essere che il sistema Prolog possa generare delle soluzioni extra. Cercate di evitarle.
+
+(^4) Il predicato standard **findall/3** vi sarà utile in questo e altri casi.
+
 (^5) I pesi negativi sono problematici per gli algoritmi di base di manipolazione grafi.
 
 
+```prolog
+list_arcs(G) .
 ```
-list_arcs(G).
-Questo predicato stampa alla console dell’interprete Prolog una lista degli archi del grafo G (è il
-simmetrico di list_vertices/1).
-list_graph(G).
-Questo predicato stampa alla console dell’interprete Prolog una lista dei vertici e degli archi del
-grafo G.
+
+Questo predicato stampa alla console dell’interprete Prolog una lista degli archi del grafo **G** (è il simmetrico di **list_vertices/1**).
+
+```prolog
+list_graph(G) .
 ```
+
+Questo predicato stampa alla console dell’interprete Prolog una lista dei vertici e degli archi del grafo **G**.
+
 ## SSSP in Prolog
 
-La soluzione del problema SSSP con l’algoritmo di Dijkstra dovrà essere implementata mediante i
-predicati seguenti. I predicati più delicati da implementare sono quelli che modificano lo stato della
-base-dati del Prolog; di fatto, si tratta di implementare una modifica dello “stato” della memoria del
-sistema. L’API per la soluzione del problema SSSP è la seguente.
+La soluzione del problema SSSP con l’algoritmo di Dijkstra dovrà essere implementata mediante i predicati seguenti. I predicati più delicati da implementare sono quelli che modificano lo stato della base-dati del Prolog; di fatto, si tratta di implementare una modifica dello “stato” della memoria del sistema. L’API per la soluzione del problema SSSP è la seguente.
 
+```prolog
+distance(G, V, D) .
 ```
-distance(G, V, D).
-Questo predicato è vero quando V è un vertice di G e, durante e dopo l’esecuzione dell’algoritmo di
-Dijkstra, la distanza minima del vertice V dalla “sorgente” è D (cfr., [CLR+09] 24.3).
-visited(G, V).
-Questo predicato è vero quando V è un vertice di G e, durante e dopo l’esecuzione dell’algoritmo di
-Dijkstra, V risulta “visitato” (cfr., [CLR+09] 24.3).
-previous(G, V, U).
-Questo predicato è vero quando V ed U sono vertici di G e, durante e dopo l’esecuzione
-dell’algoritmo di Dijkstra, il vertice U è il vertice “precedente” a V nel cammino minimo dalla
-“sorgente” a V (cfr., [CLR+09] 24.3).
-```
-NB i predicati distance/ 3 , visited/2 e previous/3 sono “dinamici” e sono asseriti (o
-ritrattati) durante l’esecuzione dell’algoritmo. I prossimi predicati servono per modificare queste
-“memorizzazioni”.
 
+Questo predicato è vero quando **V** è un vertice di **G** e, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, la distanza minima del vertice **V** dalla “sorgente” è **D** (cfr., [CLR+09] 24.3).
+
+```prolog
+visited(G, V) .
 ```
-change_distance(G, V, NewDist).
+
+Questo predicato è vero quando **V** è un vertice di **G** e, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, **V** risulta “visitato” (cfr., [CLR+09] 24.3).
+
+```prolog
+previous(G, V, U) .
+```
+
+Questo predicato è vero quando **V** ed **U** sono vertici di **G** e, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, il vertice **U** è il vertice “precedente” a **V** nel cammino minimo dalla “sorgente” a **V** (cfr., [CLR+09] 24.3).
+
+NB i predicati **distance/3**, **visited/2** e **previous/3** sono “dinamici” e sono asseriti (o ritrattati) durante l’esecuzione dell’algoritmo. I prossimi predicati servono per modificare queste “memorizzazioni”.
+
+```prolog
+change_distance(G, V, NewDist) .
+```
+
 Questo predicato ha sempre successo con due effetti collaterali: prima tutte le istanze di
 distance(G, V, _) sono ritirate dalla base-dati Prolog, e quindi distance(G, V,
 NewDist) è asserita.
