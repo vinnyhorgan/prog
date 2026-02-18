@@ -516,209 +516,170 @@ Come anticipato, l’implementazione dell’algoritmo di Dijkstra ha bisogno di 
 
 # MINHEAP in Common Lisp
 
-Un MINHEAP è una struttura dati che prevede le sequenti operazioni: NEWHEAP, INSERT, HEAD,
-EXTRACT, MODIFYKEY. Si rimanda a [CLR+09] Capitolo 6 e Sedgewick e Wayne _Algorithms_ [SW11]
-Capitolo 2.4 per la spiegazione del funzionamento di queste operazioni.
+Un MINHEAP è una struttura dati che prevede le sequenti operazioni: NEWHEAP, INSERT, HEAD, EXTRACT, MODIFYKEY. Si rimanda a [CLR+09] Capitolo 6 e Sedgewick e Wayne _Algorithms_ [SW11] Capitolo 2.4 per la spiegazione del funzionamento di queste operazioni.
 
-La libreria Common Lisp che implementa il MINHEAP avrà l’API descritta nel seguito. Seguendo
-l’esempio descritto precedentemente per la gestione dei grafi, si assume la presenza di una hash-table
-chiamata
+La libreria Common Lisp che implementa il MINHEAP avrà l’API descritta nel seguito. Seguendo l’esempio descritto precedentemente per la gestione dei grafi, si assume la presenza di una hash-table chiamata
 
-```
+```lisp
 *heaps*
 ```
+
 che è costruita nel solito modo.
 
-Per implementare gli heaps in Common Lisp nella maniera più tradizionale è necessario introdurre una
-seconda struttura dati Common Lisp: gli arrays (ed i vettori).
+Per implementare gli heaps in Common Lisp nella maniera più tradizionale è necessario introdurre una seconda struttura dati Common Lisp: gli arrays (ed i vettori).
 
-Per creare un array in Common Lisp si usa la funzione **make-array** ; dato che useremo solo array
-monodimensionali la chiamata che serve è semplicemente la seguente:
+Per creare un array in Common Lisp si usa la funzione **make-array**; dato che useremo solo array monodimensionali la chiamata che serve è semplicemente la seguente:
 
-cl-prompt> **(make-array 3)**
-_#(NIL NIL NIL)_ ; In Lispworks.
+```lisp
+cl-prompt> (make-array 3)
+#(NIL NIL NIL) ; In Lispworks.
+```
 
-che costruisce un array di N elementi (in questo caso 3). Per recuperare un elemento nella posizione i-
-esima si usa la funzione **AREF** ; per inserirne uno nella posizione i-esima si usa **SETF** in combinazione
-con AREF.
+che costruisce un array di N elementi (in questo caso 3). Per recuperare un elemento nella posizione i-esima si usa la funzione **AREF** ; per inserirne uno nella posizione i-esima si usa **SETF** in combinazione con AREF.
 
+```lisp
+cl-prompt> (defparameter a (make-array 3))
+A
 
-cl-prompt> **(defparameter a (make-array 3))**
-_A_
+cl-prompt> a
+#(NIL NIL NIL) ; In Lispworks.
 
-cl-prompt> **a**
-_#(NIL NIL NIL)_ ; In Lispworks.
+cl-prompt> (aref a 1) ; Gli arrays sono indicizzati a 0.
+NIL
 
-cl-prompt> **(aref a 1)** ; Gli arrays sono indicizzati a 0.
-_NIL_
+cl-prompt> (setf (aref a 1) 42)
+42
 
-cl-prompt> **(setf (aref a 1) 42)**
-_42_
+cl-prompt> a
+#(NIL 42 NIL)
 
-cl-prompt> **a**
-_#(NIL 42 NIL)_
-
-cl-prompt> **(aref a 1)**
-_42_
+cl-prompt> (aref a 1)
+42
+```
 
 Le funzioni da implementare sono le seguenti.
 
-```
-new-heap H &optional ( initial-capacity 42 ) → heap-rep
-Questa funzione inserisce un nuovo heap nella hash-table *heaps*. Una sua semplice
-implementazione potrebbe essere
-```
-```
+**new-heap** H &optional (initial-capacity 42) → heap-rep
+
+Questa funzione inserisce un nuovo heap nella hash-table \*heaps\*. Una sua semplice implementazione potrebbe essere
+
+```lisp
 (defun new-heap (heap-id &optional (initial-capacity 42))
-(or (gethash heap-id *heaps*)
-(setf (gethash heap-id *heaps*)
-(list ’heap heap-id 0
-(make-array initial-capacity)))))
+  (or (gethash heap-id *heaps*)
+    (setf (gethash heap-id *heaps*)
+      (list 'heap heap-id 0
+        (make-array initial-capacity)))))
 ```
+
 Quindi una heap-rep è una lista (potete anche usare altri oggetti Common Lisp) siffatta:
 
-```
+```lisp
 (HEAP heap-id heap-size actual-heap )
 ```
-Ne consegue che anche le funzioni di “accesso” ad uno heap-rep sono le ovvie: **heap-id** ,
-**heap-size** e **heap-actual-heap**.
 
-Notate che si usa il “nome” dello heap per recuperarlo^9 Notate che nella hash table ***heaps*** si
-mantengono le “heap-reps” indicizzate con il nome dello heap.
+Ne consegue che anche le funzioni di “accesso” ad uno heap-rep sono le ovvie: **heap-id**, **heap-size** e **heap-actual-heap**.
 
-_Nota_ : potete usare **defstruct** al posto di rappresentare uno heap come una lista
-(heap id N <array>); l’importante è che l’interfaccia sia rispettata.
+Notate che si usa il “nome” dello heap per recuperarlo^9 Notate che nella hash table **\*heaps\*** si mantengono le “heap-reps” indicizzate con il nome dello heap.
+
+_Nota_: potete usare **defstruct** al posto di rappresentare uno heap come una lista ```(heap id N <array>)```; l’importante è che l’interfaccia sia rispettata.
 
 Le altre funzioni necessarie sono
 
-```
-heap-delete heap-id → T
-Rimuove tutto lo heap indicizzato da heap-id. Potete usare la funzione remhash per questo
-scopo.
-heap-empty heap-id → boolean
+**heap-delete** heap-id → T
+
+Rimuove tutto lo heap indicizzato da heap-id. Potete usare la funzione **remhash** per questo scopo.
+
+**heap-empty** heap-id → boolean
+
 Questo predicato è vero quando lo heap heap-id non contiene elementi.
-heap-not-empty heap-id → boolean
+
+**heap-not-empty** heap-id → boolean
+
 Questo predicato è vero quando lo heap heap-id contiene almeno un elemento.
-```
-Un MINHEAP mantiene delle associazioni tra chiavi K e valori V. L’implementazione degli heap in
-Common Lisp è la solita basata su un array monodimensionale che si può trovare, ad esempio, in
-[CLR+09] e [SW11].
+
+Un MINHEAP mantiene delle associazioni tra chiavi **K** e valori **V**. L’implementazione degli heap in Common Lisp è la solita basata su un array monodimensionale che si può trovare, ad esempio, in [CLR+09] e [SW11].
 
 (^9) Ciò non è strettamente necessario, ma rende, come si è detto, il codice più simile a quello Prolog.
 
+**heap-head** heap-id → (K V)
 
-```
-heap-head heap-id → ( K V)
-La funzione heap-head ritorna una lista di due elementi dove K è la chiave minima e V il valore
-associato.
-heap-insert heap-id K V → boolean
-La funzione heap-insert inserisce l’elemento V nello heap heap-id con chiave K.
-Naturalmente, lo heap heap-id dovrà essere ristrutturato in modo da mantenere la “heap
-property” ad ogni nodo dello heap; inoltre dovrete “allargare” lo heap quando si cerca di inserire
-elementi oltre la sua “capacity”.
-heap-extract heap-id → ( K V)
-La funzione heap-extract ritorna la lista con K, V e con K minima; la coppia è rimossa dallo
-heap heap-id. Naturalmente, lo heap heap-id dovrà essere ristrutturato in modo da mantenere
-la “heap property” ad ogni nodo dello heap.
-heap-modify-key heap-id new-key old-key V → boolean
-La funzone heap-modify-key sostituisce la chiave OldKey (associata al valore V) con
-NewKey. Naturalmente, lo heap heap-id dovrà essere ristrutturato in modo da mantenere la
-“heap property” ad ogni nodo dello heap. Attenzione che al contrario dell’implementazione Prolog,
-questa operazione può risultare molto costosa (lineare nella dimensione dello heap). Perché?
-Come potreste pensare di aumentare la “heap-rep” per rendere questa operazione più efficiente?
-heap-print heap-id → boolean
-Questa funzione stampa sulla console lo stato interno dello heap heap-id. Questa funzione vi
-serve soprattutto per debugging; il formato di questa stampa è libero.
-```
-Anche per il Common Lisp, il consiglio è di implementare la libreria MINHEAP, e di assicurarsi che
-funzioni, prima di passare ad implementare l’algoritmo di Dijkstra.
+La funzione heap-head ritorna una lista di due elementi dove **K** è la chiave minima e **V** il valore associato.
+
+**heap-insert** heap-id K V → boolean
+
+La funzione heap-insert inserisce l’elemento **V** nello heap heap-id con chiave **K**. Naturalmente, lo heap heap-id dovrà essere ristrutturato in modo da mantenere la “heap property” ad ogni nodo dello heap; inoltre dovrete “allargare” lo heap quando si cerca di inserire elementi oltre la sua “capacity”.
+
+**heap-extract** heap-id → (K V)
+
+La funzione heap-extract ritorna la lista con **K**, **V** e con **K** minima; la coppia è rimossa dallo heap heap-id. Naturalmente, lo heap heap-id dovrà essere ristrutturato in modo da mantenere la “heap property” ad ogni nodo dello heap.
+
+**heap-modify-key** heap-id new-key old-key V → boolean
+
+La funzone heap-modify-key sostituisce la chiave **OldKey** (associata al valore **V**) con **NewKey**. Naturalmente, lo heap heap-id dovrà essere ristrutturato in modo da mantenere la “heap property” ad ogni nodo dello heap. Attenzione che al contrario dell’implementazione Prolog, questa operazione può risultare molto costosa (lineare nella dimensione dello heap). Perché? Come potreste pensare di aumentare la “heap-rep” per rendere questa operazione più efficiente?
+
+**heap-print** heap-id → boolean
+
+Questa funzione stampa sulla console lo stato interno dello heap heap-id. Questa funzione vi serve soprattutto per debugging; il formato di questa stampa è libero.
+
+Anche per il Common Lisp, il consiglio è di implementare la libreria MINHEAP, e di assicurarsi che funzioni, prima di passare ad implementare l’algoritmo di Dijkstra.
 
 # Avvertenze
 
-Come sempre dovete evitare costrutti “imperativi” e assegnamenti non esplicitamente permessi.
-Inoltre, non usate _moduli_ in Prolog e _packages_ in Common Lisp. I nostri tests assumono che non ci
-siano.
+Come sempre dovete evitare costrutti “imperativi” e assegnamenti non esplicitamente permessi. Inoltre, non usate _moduli_ in Prolog e _packages_ in Common Lisp. I nostri tests assumono che non ci siano.
 
-Sia in Prolog che in Common Lisp già esistono librerie per gli HEAP; non potete usarle. Uno degli
-obiettivi di questo progetto è di implementare le code con priorità in modo da apprendere tutti i dettagli
-del caso.
+Sia in Prolog che in Common Lisp già esistono librerie per gli HEAP; non potete usarle. Uno degli obiettivi di questo progetto è di implementare le code con priorità in modo da apprendere tutti i dettagli del caso.
 
 # Tests
 
-Per essere sicuri di avere degli algoritmi funzionanti, è bene generare una serie di grafi a caso (inclusi
-quelli presentati in [CLR+09] e [SW11]) e testare che il proprio algoritmo si comporti come ci si
-aspetta. Inoltre, si consiglia di assicurarsi che la coda con priorità funzioni, _prima_ di procedere alla
-stesura dell’algoritmo SSSP.
+Per essere sicuri di avere degli algoritmi funzionanti, è bene generare una serie di grafi a caso (inclusi quelli presentati in [CLR+09] e [SW11]) e testare che il proprio algoritmo si comporti come ci si aspetta. Inoltre, si consiglia di assicurarsi che la coda con priorità funzioni, _prima_ di procedere alla stesura dell’algoritmo SSSP.
 
 # Da consegnare
 
 Dovrete consegnare un file .zip (i files .tar o .tar.gz o .rar **non sono accettabili!!!** ) dal nome
 
 ```
-Cognomi _ Nomi _ Matricola _SSSP_LP_ 202602 .zip
+Cognomi_Nomi_Matricola_SSSP_LP_202602.zip
 ```
-_Nomi_ e _Cognomi_ devono avere solo la prima lettera maiuscola, _Matricola_ deve avere lo zero iniziale
-se presente.
 
-Questo file _deve contenere una sola directory_ (folder, cartella) con lo stesso nome del file (meno il
-suffisso .zip). Al suo interno ci deve essere _una sola_ sottodirectory chiamata ‘Prolog’. Al suo interno
-questa directory deve contenere il file Prolog caricabile e interpretabile, più tutte le istruzioni e i
-commenti che riterrete necessari includere. Il file Prolog si deve chiamare sssp.pl. Istruzioni e
-commenti devono trovarsi in un file chiamato README.txt.
+_Nomi_ e _Cognomi_ devono avere solo la prima lettera maiuscola, _Matricola_ deve avere lo zero iniziale se presente.
 
-Consideriamo, ad esempio, un ipotetico studente Mario Epaminonda Bianchi Rossi, con matricola
-0 12345. Questo studente dovrà consegnare un file di nome
+Questo file _deve contenere una sola directory_ (folder, cartella) con lo stesso nome del file (meno il suffisso .zip). Al suo interno ci deve essere _una sola_ sottodirectory chiamata ‘Prolog’. Al suo interno questa directory deve contenere il file Prolog caricabile e interpretabile, più tutte le istruzioni e i commenti che riterrete necessari includere. Il file Prolog si deve chiamare **sssp.pl**. Istruzioni e commenti devono trovarsi in un file chiamato **README.txt**.
 
-
-Bianchi_Rossi_Mario_Epaminonda_012345_SSSP_LP_ 202602 .zip che, una volta
+Consideriamo, ad esempio, un ipotetico studente Mario Epaminonda Bianchi Rossi, con matricola 012345. Questo studente dovrà consegnare un file di nome 'Bianchi_Rossi_Mario_Epaminonda_012345_SSSP_LP_202602.zip' che, una volta
 spacchettato, dovrà produrre questa struttura di directory e files:
 
-Bianchi_Rossi_Mario_Epaminonda_012345_SSSP_LP_ 202602 /
-Lisp/
-sssp.lisp
-README.txt
-Prolog/
-sssp.pl
-README.txt
+```
+Bianchi_Rossi_Mario_Epaminonda_012345_SSSP_LP_202602/
+  Lisp/
+    sssp.lisp
+    README.txt
+  Prolog/
+    sssp.pl
+    README.txt
+```
 
-Potete aggiungere altri files, ma il loro caricamento dovrà essere effettuato automaticamente al
-momento del caricamento (“loading”) del file sssp.pl.
+Potete aggiungere altri files, ma il loro caricamento dovrà essere effettuato automaticamente al momento del caricamento (“loading”) del file **sssp.pl**.
 
-Come sempre, valgono le direttive standard (reperibili sulla piattaforma Moodle) circa la formazione dei
-gruppi.
+Come sempre, valgono le direttive standard (reperibili sulla piattaforma Moodle) circa la formazione dei gruppi.
 
-Ogni file deve contenere all’inizio un commento con il nome e matricola di ogni componente del
-gruppo. Ogni persona deve consegnare un elaborato, anche quando ha lavorato in gruppo.
+Ogni file deve contenere all'inizio un commento con il nome e matricola di ogni componente del gruppo. Ogni persona deve consegnare un elaborato, anche quando ha lavorato in gruppo.
 
-_Il termine ultimo della consegna sulla piattaforma Moodle è sabato 28 febbraio, 2026, ore 23: 55 GMT+
-Time._
+_Il termine ultimo della consegna sulla piattaforma Moodle è sabato 28 febbraio, 2026, ore 23: 55 GMT+Time._
 
 # ATTENZIONE!
 
-Non fate copia-incolla di codice da questo documento, o da altre fonti. Spesso vengono inseriti dei
-caratteri UNICODE nel file di testo che creano dei problemi agli scripts di valutazione.
+Non fate copia-incolla di codice da questo documento, o da altre fonti. Spesso vengono inseriti dei caratteri UNICODE nel file di testo che creano dei problemi agli scripts di valutazione.
 
 # Valutazione
 
-In aggiunta a quanto detto nella sezione “Indicazioni e requisiti” seguono ulteriori informazioni sulla
-procedura di valutazione.
+In aggiunta a quanto detto nella sezione “Indicazioni e requisiti” seguono ulteriori informazioni sulla procedura di valutazione.
 
-Abbiamo a disposizione una serie di esempi e test standard _che verranno eseguiti in maniera
-completamente automatica_ e saranno usati per la valutazione programmi, così da garantire l’oggettività
-della valutazione. Se i files sorgenti non potranno essere letti/caricati nell’ambiente SWI-Prolog e/o
-nell’ambiente Lispworks Common Lisp, il progetto non sarà ritenuto sufficiente. (N.B.: il programma
-_deve necessariamente funzionare in SWI-Prolog e in Lispworks_ , ma non necessariamente in ambiente
-Windows; usate solo primitive presenti nell’ambiente SWI-Prolog e Lispworks).
+Abbiamo a disposizione una serie di esempi e test standard _che verranno eseguiti in maniera completamente automatica_ e saranno usati per la valutazione programmi, così da garantire l’oggettività della valutazione. Se i files sorgenti non potranno essere letti/caricati nell’ambiente SWI-Prolog e/o nell’ambiente Lispworks Common Lisp, il progetto non sarà ritenuto sufficiente. (N.B.: il programma _deve necessariamente funzionare in SWI-Prolog e in Lispworks_ , ma non necessariamente in ambiente Windows; usate solo primitive presenti nell’ambiente SWI-Prolog e Lispworks).
 
-Il mancato rispetto dei nomi indicati per funzioni e predicati, o anche delle strutture proposte e della
-semantica esemplificata nel testo del progetto, oltre a comportare ritardi e possibili fraintendimenti nella
-correzione, possono comportare una diminuzione nel voto ottenuto.
+Il mancato rispetto dei nomi indicati per funzioni e predicati, o anche delle strutture proposte e della semantica esemplificata nel testo del progetto, oltre a comportare ritardi e possibili fraintendimenti nella correzione, possono comportare una diminuzione nel voto ottenuto.
 
 # Riferimenti
 
-[CLR+09] Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein,
-_Introduction to Algorithms_ , Third Edition, The MIT Press, 2009 (Capitoli 6 e 24.3)
+[CLR+09] Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein, _Introduction to Algorithms_ , Third Edition, The MIT Press, 2009 (Capitoli 6 e 24.3)
 
-[SW11] Robert Sedgewick, Kevin Wayne, _Algorithms_ , Fourth Edition, Addison Wesley
-Professional, 2011 (Capitoli 2.4 [http://algs4.cs.princeton.edu/24pq/](http://algs4.cs.princeton.edu/24pq/) e 4.
-[http://algs4.cs.princeton.edu/44sp/)](http://algs4.cs.princeton.edu/44sp/))
+[SW11] Robert Sedgewick, Kevin Wayne, _Algorithms_ , Fourth Edition, Addison Wesley Professional, 2011 (Capitoli 2.4 [http://algs4.cs.princeton.edu/24pq/](http://algs4.cs.princeton.edu/24pq/) e 4. [http://algs4.cs.princeton.edu/44sp/)](http://algs4.cs.princeton.edu/44sp/))
