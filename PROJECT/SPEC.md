@@ -1,63 +1,50 @@
-## Linguaggi di Programmazione Anno Accademico 20 25 - 2026
+## Linguaggi di Programmazione Anno Accademico 2025-2026
 
-## Progetto febbraio 2026 (E 2 P)
+## Progetto febbraio 2026 (E2P)
 
 # “Single Source Shortest Paths”
 
-## Marco Antoniotti, Claudio Ferretti, Fabio Sartori
-
-# Consegna:
-
-# sabato 28 febbraio 2026 , ore 23:59 GMT+1 Time
+# Consegna: sabato 28 febbraio 2026, ore 23:59 GMT+1 Time
 
 # Introduzione
 
-Calcolare il percorso più breve da un punto a un altro di una mappa^1 è un problema più che noto. Vi
-sono diversi algoritmi in grado di risolvere questo problema, noto in letteratura come il “ _Single Source
-Shortest Path Problem_ ” (SSSP Problem, cfr., [CLR+09] capitolo 24).
+Calcolare il percorso più breve da un punto a un altro di una mappa^1 è un problema più che noto. Vi sono diversi algoritmi in grado di risolvere questo problema, noto in letteratura come il “_Single Source Shortest Path Problem_” (SSSP Problem, cfr., [CLR+09] capitolo 24).
 
-Lo scopo di questo progetto è l’implementazione dell’algoritmo di Dijkstra (cfr., [CLR+09] 24.3), che
-risolve il problema SSSP per _grafi diretti_ e _connessi_ con distanze tra vertici non negative^2.
+Lo scopo di questo progetto è l’implementazione dell’algoritmo di Dijkstra (cfr., [CLR+09] 24.3), che risolve il problema SSSP per _grafi diretti_ e _connessi_ con distanze tra vertici non negative^2.
 
-Per procedere all’implementazione di quest’algoritmo è necessario – e, di fatto, è la parte principale del
-progetto – produrre un’implementazione di un MINHEAP (o MINPRIORITYQUEUE).
+Per procedere all’implementazione di quest’algoritmo è necessario – e, di fatto, è la parte principale del progetto – produrre un’implementazione di un MINHEAP (o MINPRIORITYQUEUE).
 
-Nel seguito troverete le specifiche dell’API richiesta e dei suggerimenti su come affrontare e risolvere
-alcuni problemi implementativi che, si pensa, potrebbero presentarsi.
+Nel seguito troverete le specifiche dell’API richiesta e dei suggerimenti su come affrontare e risolvere alcuni problemi implementativi che, si pensa, potrebbero presentarsi.
 
 # Grafi in Prolog
 
-In “The Art of Prolog” si suggerisce come rappresentare dei semplici _grafi diretti_ in Prolog. L’idea è di
-inserire direttamente nella base-dati del sistema, fatti del tipo:
+In “The Art of Prolog” si suggerisce come rappresentare dei semplici _grafi diretti_ in Prolog. L’idea è di inserire direttamente nella base-dati del sistema, fatti del tipo:
 
-**vertex(v).
-vertex(u).
-vertex(w).**
+```prolog
+vertex(v) .
+vertex(u) .
+vertex(w) .
 
-**arc(u, v, 0).
-arc(u, w, 10).
-arc(v, w, 4.2).
-arc(w, u, 1).**
+arc(u, v, 0) .
+arc(u, w, 10) .
+arc(v, w, 4.2) .
+arc(w, u, 1) .
+```
 
-Inoltre, possiamo pensare di inserire degli altri dati nella base-dati Prolog; ad esempio, possiamo
-inserire informazioni riguardanti associate ad ogni vertice mediante dei predicati che rappresentano
-queste associazioni. Ad esempio, potremmo supporre che ad ogni vertice sia associata una posizione
-su una mappa.
+Inoltre, possiamo pensare di inserire degli altri dati nella base-dati Prolog; ad esempio, possiamo inserire informazioni riguardanti associate ad ogni vertice mediante dei predicati che rappresentano queste associazioni. Ad esempio, potremmo supporre che ad ogni vertice sia associata una posizione su una mappa.
 
-**pos(v, 10, 22).
-pos(u, 234, 11).
-pos(w, 1, 34).
-...**
+```prolog
+pos(v, 10, 22) .
+pos(u, 234, 11) .
+pos(w, 1, 34) .
+...
+```
 
-(^1) Ad esempio, calcolare la distanza tra Porta Ludovica e Piazza Napoli a Milano (a meno di trovarsi in
-un racconto di Umberto Eco).
-(^2) In realtà, il vero vincolo è che non esistano cicli nel grafo dove la somma dei pesi degli archi sia
-negativa; per il progetto assumiamo che tutti i pesi siano maggiori o uguali a 0.
+(^1) Ad esempio, calcolare la distanza tra Porta Ludovica e Piazza Napoli a Milano (a meno di trovarsi in un racconto di Umberto Eco).
 
+(^2) In realtà, il vero vincolo è che non esistano cicli nel grafo dove la somma dei pesi degli archi sia negativa; per il progetto assumiamo che tutti i pesi siano maggiori o uguali a 0.
 
-Una volta scelta una rappresentazione in memoria di un grafo ( _diretto_ ) è semplice manipolarlo in
-Prolog e costruire delle API che ci permettono di costruire algoritmi più complessi, quali l’algoritmo di
-Dijkstra per la soluzione del problema SSSP.
+Una volta scelta una rappresentazione in memoria di un grafo (_diretto_) è semplice manipolarlo in Prolog e costruire delle API che ci permettono di costruire algoritmi più complessi, quali l’algoritmo di Dijkstra per la soluzione del problema SSSP.
 
 ## Interfaccia Prolog per la manipolazione di grafi
 
