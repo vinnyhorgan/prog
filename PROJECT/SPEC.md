@@ -442,84 +442,77 @@ Questa funzione stampa alla console dell’interprete Common Lisp una lista dei 
 
 ## SSSP in Common Lisp
 
-Anche in Common Lisp dovrete implementare un’interfaccia standardizzata, sempre sulla falsariga di
-quella descritta per il sistema Prolog.
+Anche in Common Lisp dovrete implementare un’interfaccia standardizzata, sempre sulla falsariga di quella descritta per il sistema Prolog.
 
 L’API per la soluzione del problema SSSP è la seguente.
 
-```
-sssp-dist graph-id vertex-id → d
-Questa funzione, dato un vertex-id di un grafo graph-id ritorna, durante e dopo l’esecuzione
-dell’algoritmo di Dijkstra, la distanza minima d del vertice vertex-id dalla “sorgente” (cfr.,
-[CLR+09] 24.3).
-sssp-visited graph-id vertex-id → boolean
-Questo predicato è vero quando vertex-id è un vertice di graph-id e, durante e dopo
-l’esecuzione dell’algoritmo di Dijkstra, vertex-id risulta “visitato” (cfr., [CLR+09] 24.3).
-sssp-previous graph-id V → U
-Questa funzione, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, ritorna il vertice U che è il
-vertice “precedente” a V nel cammino minimo dalla “sorgente” a V (cfr., [CLR+09] 24.3).
-```
-NB le funzioni dist, visited e previous operano sulle hash-tables descritte precedentemente e
-dal nome eponimo.
+**sssp-dist** graph-id vertex-id → d
 
-```
-sssp-change-dist graph-id V new-dist → NIL
+Questa funzione, dato un **vertex-id** di un grafo **graph-id** ritorna, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, la distanza minima **d** del vertice **vertex-id** dalla “sorgente” (cfr., [CLR+09] 24.3).
+
+**sssp-visited** graph-id vertex-id → boolean
+
+Questo predicato è vero quando **vertex-id** è un vertice di **graph-id** e, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, **vertex-id** risulta “visitato” (cfr., [CLR+09] 24.3).
+
+**sssp-previous** graph-id V → U
+
+Questa funzione, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, ritorna il vertice U che è il vertice “precedente” a V nel cammino minimo dalla “sorgente” a V (cfr., [CLR+09] 24.3).
+
+NB le funzioni **dist**, **visited** e **previous** operano sulle hash-tables descritte precedentemente e dal nome eponimo.
+
+**sssp-change-dist** graph-id V new-dist → NIL
+
 Questa funzione ha solo un effetto collaterale: alla chiave
+
+```lisp
+(graph-id V)
 ```
-```
-( graph-id V )
-```
-```
-nella hash-table *distances* viene associato il valore new-dist.
-sssp-change-previous graph-id V U → NIL
+
+nella hash-table \*distances\* viene associato il valore **new-dist**.
+
+**sssp-change-previous** graph-id V U → NIL
+
 Questa funzione ha solo un effetto collaterale: alla chiave
-```
-```
-( graph-id V )
-```
-```
-nella hash-table *previous* viene associato il valore U.
+
+```lisp
+(graph-id V)
 ```
 
-Le funzioni che servono per risolvere il problema SSSP sono sssp e shortest-path.
+nella hash-table \*previous\* viene associato il valore **U**.
 
-```
-sssp-dijkstra graph-id source → NIL
-Questa funzione termina con un effetto collaterale. Dopo la sua esecuzione, la hash-table
-*distances* contiene al suo interno le associazioni ( graph-id V ) ⇒ d per ogni V
-appartenente a
-graph-id; la hash-table *previous* contiene le associazioni ( graph-id V ) ⇒ U ; infine la
-hash-table *visited* contiene the associazioni graph-id V ) ⇒ {T, NIL}. Naturalmente il
-contenuto delle varie hash-tables predicati deve essere corretto rispetto alla soluzione del problema
-SSSP.
-sssp-shortest-path G Source V → Path
+Le funzioni che servono per risolvere il problema SSSP sono **sssp** e **shortest-path**.
+
+**sssp-dijkstra** graph-id source → NIL
+
+Questa funzione termina con un effetto collaterale. Dopo la sua esecuzione, la hash-table \*distances\* contiene al suo interno le associazioni (graph-id V) ⇒ d per ogni **V** appartenente a **graph-id**; la hash-table \*previous\* contiene le associazioni (graph-id V) ⇒ U; infine la hash-table \*visited\* contiene the associazioni (graph-id V) ⇒ {T, NIL}. Naturalmente il contenuto delle varie hash-tables predicati deve essere corretto rispetto alla soluzione del problema SSSP.
+
+**sssp-shortest-path** G Source V → Path
+
 Questa funzione ritorna una lista di archi
-```
-```
+
+```lisp
 ((arc G Source N1 W1)
-(arc G N1 N2 W2)
-...
-(arc G NK V Wk))
+ (arc G N1 N2 W2)
+ ...
+ (arc G NK V Wk))
 ```
-```
-che rappresenta il “cammino minimo” da Source a V.
-```
+
+che rappresenta il “cammino minimo” da **Source** a **V**.
+
 Una tipica interazione con il sistema potrebbe essere la seguente:
 
-```
-cl-prompt> (sssp-dijkstra ’my-graph ’s)
+```lisp
+cl-prompt> (sssp-dijkstra 'my-graph 's)
 NIL
-```
-```
-cl-prompt> (sssp-shortest-path ’my-graph ’s ’v42)
+
+cl-prompt> (sssp-shortest-path 'my-graph 's 'v42)
 ((arc MY-GRAPH S N1 3)
-(arc MY-GRAPH N1 N4 12)
-(arc MY-GRAPH N4 V12 1)
-(arc MY-GRAPH V12 V42 7))
+ (arc MY-GRAPH N1 N4 12)
+ (arc MY-GRAPH N4 V12 1)
+ (arc MY-GRAPH V12 V42 7))
 ```
-Come anticipato, l’implementazione dell’algoritmo di Dijkstra ha bisogno di un’implementazione
-funzionante di una coda a priorità ( _priority queue_ ), in altre parole di un MINHEAP. Nel seguito si
-descriverà l’API di una libreria Common Lisp che implementa un MINHEAP.
+
+Come anticipato, l’implementazione dell’algoritmo di Dijkstra ha bisogno di un’implementazione funzionante di una coda a priorità (_priority queue_), in altre parole di un MINHEAP. Nel seguito si descriverà l’API di una libreria Common Lisp che implementa un MINHEAP.
 
 # MINHEAP in Common Lisp
 
