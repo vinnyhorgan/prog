@@ -1,4 +1,4 @@
-La consegna è individuale.  In ogni file sorgente (**.pl** e **.lisp**) dovete avere un commento iniziale con i nomi e le matricole dei componenti del gruppo, uno per riga.
+La consegna è individuale. In ogni file sorgente (**.pl**, **.lisp**) dovete avere un commento iniziale con i nomi e le matricole dei componenti del gruppo, uno per riga.
 
 Inoltre, vi ricordiamo che il file **.zip** dal nome **Cognomi_Nomi_Matricola_SSSP_LP_202602.zip** deve espandere nella struttura qui sotto.
 
