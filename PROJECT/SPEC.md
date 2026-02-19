@@ -484,7 +484,7 @@ Le funzioni che servono per risolvere il problema SSSP sono **sssp** e **shortes
 
 **sssp-dijkstra** graph-id source → NIL
 
-Questa funzione termina con un effetto collaterale. Dopo la sua esecuzione, la hash-table \*distances\* contiene al suo interno le associazioni (graph-id V) ⇒ d per ogni **V** appartenente a **graph-id**; la hash-table \*previous\* contiene le associazioni (graph-id V) ⇒ U; infine la hash-table \*visited\* contiene the associazioni (graph-id V) ⇒ {T, NIL}. Naturalmente il contenuto delle varie hash-tables predicati deve essere corretto rispetto alla soluzione del problema SSSP.
+Questa funzione termina con un effetto collaterale. Dopo la sua esecuzione, la hash-table \*distances\* contiene al suo interno le associazioni (graph-id V) ⇒ d per ogni **V** appartenente a **graph-id**; la hash-table \*previous\* contiene le associazioni (graph-id V) ⇒ U; infine la hash-table \*visited\* contiene le associazioni (graph-id V) ⇒ {T, NIL}. Naturalmente il contenuto delle varie hash-tables predicati deve essere corretto rispetto alla soluzione del problema SSSP.
 
 **sssp-shortest-path** G Source V → Path
 
@@ -664,7 +664,7 @@ Come sempre, valgono le direttive standard (reperibili sulla piattaforma Moodle)
 
 Ogni file deve contenere all'inizio un commento con il nome e matricola di ogni componente del gruppo. Ogni persona deve consegnare un elaborato, anche quando ha lavorato in gruppo.
 
-_Il termine ultimo della consegna sulla piattaforma Moodle è sabato 28 febbraio, 2026, ore 23: 55 GMT+Time._
+_Il termine ultimo della consegna sulla piattaforma Moodle è sabato 28 febbraio, 2026, ore 23:55 GMT+Time._
 
 # ATTENZIONE!
 
