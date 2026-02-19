@@ -195,9 +195,9 @@ Questo predicato è vero quando Path è una lista di archi
 
 ```prolog
 [arc(G, Source, N1, W1),
-arc(G, N1, N2, W2),
-...,
-arc(G, NK, V, Wk)]
+ arc(G, N1, N2, W2),
+ ...,
+ arc(G, NK, V, Wk)]
 ```
 
 che rappresenta il “cammino minimo” da **Source** a **V**.
@@ -206,7 +206,7 @@ Una tipica interrogazione del sistema potrebbe essere la seguente:
 
 ```prolog
 ?- dijkstra_sssp(my_graph, s),
-shortest_path(my_graph, s, v42, ShortestPath) .
+   shortest_path(my_graph, s, v42, ShortestPath) .
 ```
 
 Come anticipato, l’implementazione dell’algoritmo di Dijkstra ha bisogno di un’implementazione funzionante di una coda a priorità (_priority queue_), in altre parole di un MINHEAP. Nel seguito si descriverà l’API di una libreria Prolog che implementa un MINHEAP.
@@ -323,7 +323,7 @@ Le hash-tables sono strutture dati primitive in Common Lisp. Le funzioni che le 
 - **remhash**: rimuove il valore associato ad una chiave.
 - **maphash**: come **mapcar** ma prende una funzione di due argomenti (uno per la chiave ed uno per il valore) ed una hash-table ed applica la funzione ad ognuna delle coppie.
 
-Per modificare il contenuto di una hash-table, oltre a **clrhash**, si usa l’operatore di assegnamento, **setf** , in congiunzione con **gethash**.
+Per modificare il contenuto di una hash-table, oltre a **clrhash**, si usa l’operatore di assegnamento, **setf**, in congiunzione con **gethash**.
 La seconda parte del capitolo “_Collections_” di “_Practical Common Lisp_” di Seibel contiene un’altra introduzione alle hash-tables [qua](http://www.gigamonkeys.com/book/collections.html).
 
 [^6]: É possibile costruire queste strutture dati in modo funzionale e senza effetti collaterali, ma risulta tanto complicato quanto elegante.
@@ -536,7 +536,7 @@ cl-prompt> (make-array 3)
 #(NIL NIL NIL) ; In Lispworks.
 ```
 
-che costruisce un array di N elementi (in questo caso 3). Per recuperare un elemento nella posizione i-esima si usa la funzione **AREF** ; per inserirne uno nella posizione i-esima si usa **SETF** in combinazione con AREF.
+che costruisce un array di N elementi (in questo caso 3). Per recuperare un elemento nella posizione i-esima si usa la funzione **AREF**; per inserirne uno nella posizione i-esima si usa **SETF** in combinazione con **AREF**.
 
 ```lisp
 cl-prompt> (defparameter a (make-array 3))
@@ -575,12 +575,12 @@ Questa funzione inserisce un nuovo heap nella hash-table \*heaps\*. Una sua semp
 Quindi una heap-rep è una lista (potete anche usare altri oggetti Common Lisp) siffatta:
 
 ```lisp
-(HEAP heap-id heap-size actual-heap )
+(HEAP heap-id heap-size actual-heap)
 ```
 
 Ne consegue che anche le funzioni di “accesso” ad uno heap-rep sono le ovvie: **heap-id**, **heap-size** e **heap-actual-heap**.
 
-Notate che si usa il “nome” dello heap per recuperarlo[^9] Notate che nella hash table **\*heaps\*** si mantengono le “heap-reps” indicizzate con il nome dello heap.
+Notate che si usa il “nome” dello heap per recuperarlo[^9]. Notate che nella hash table **\*heaps\*** si mantengono le “heap-reps” indicizzate con il nome dello heap.
 
 _Nota_: potete usare **defstruct** al posto di rappresentare uno heap come una lista ```(heap id N <array>)```; l’importante è che l’interfaccia sia rispettata.
 
@@ -663,7 +663,7 @@ Potete aggiungere altri files, ma il loro caricamento dovrà essere effettuato a
 
 Come sempre, valgono le direttive standard (reperibili sulla piattaforma Moodle) circa la formazione dei gruppi.
 
-Ogni file deve contenere all'inizio un commento con il nome e matricola di ogni componente del gruppo. Ogni persona deve consegnare un elaborato, anche quando ha lavorato in gruppo.
+Ogni file deve contenere all’inizio un commento con il nome e matricola di ogni componente del gruppo. Ogni persona deve consegnare un elaborato, anche quando ha lavorato in gruppo.
 
 _Il termine ultimo della consegna sulla piattaforma Moodle è sabato 28 febbraio, 2026, ore 23:55 GMT+1 Time._
 
@@ -675,7 +675,7 @@ Non fate copia-incolla di codice da questo documento, o da altre fonti. Spesso v
 
 In aggiunta a quanto detto nella sezione “Indicazioni e requisiti” seguono ulteriori informazioni sulla procedura di valutazione.
 
-Abbiamo a disposizione una serie di esempi e test standard _che verranno eseguiti in maniera completamente automatica_ e saranno usati per la valutazione programmi, così da garantire l’oggettività della valutazione. Se i files sorgenti non potranno essere letti/caricati nell’ambiente SWI-Prolog e/o nell’ambiente Lispworks Common Lisp, il progetto non sarà ritenuto sufficiente. (N.B.: il programma _deve necessariamente funzionare in SWI-Prolog e in Lispworks_ , ma non necessariamente in ambiente Windows; usate solo primitive presenti nell’ambiente SWI-Prolog e Lispworks).
+Abbiamo a disposizione una serie di esempi e test standard _che verranno eseguiti in maniera completamente automatica_ e saranno usati per la valutazione programmi, così da garantire l’oggettività della valutazione. Se i files sorgenti non potranno essere letti/caricati nell’ambiente SWI-Prolog e/o nell’ambiente Lispworks Common Lisp, il progetto non sarà ritenuto sufficiente. (N.B.: il programma _deve necessariamente funzionare in SWI-Prolog e in Lispworks_, ma non necessariamente in ambiente Windows; usate solo primitive presenti nell’ambiente SWI-Prolog e Lispworks).
 
 Il mancato rispetto dei nomi indicati per funzioni e predicati, o anche delle strutture proposte e della semantica esemplificata nel testo del progetto, oltre a comportare ritardi e possibili fraintendimenti nella correzione, possono comportare una diminuzione nel voto ottenuto.
 
