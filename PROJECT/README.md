@@ -7,7 +7,3 @@ Potete formare gruppi di al massimo tre persone, non importa di quale turno. Con
 La data di scadenza per la consegna è il **28 febbraio 2026** alle ore 23:55.
 
 **Leggere attentamente tutte le istruzioni di consegna.**
-
-Risorse:
-
-- [video](https://www.youtube.com/watch?v=XB4MIexjvY0)

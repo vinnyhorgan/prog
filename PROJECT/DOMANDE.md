@@ -11,6 +11,7 @@
 3. Quando dobbiamo allargare l'heap (in heap-insert), per evitare di salvare l'heap corrente e ricopiarlo in un nuovo heap di capacità più grande, si può usare la keyword ":adjustable t" in "make-array" nel predicato new-heap in modo tale da usare il predicato adjust-array (in heap-insert)?
 
 **R:** Buonasera
+
 1. si, il peso può essere un float.
 2. assumete che sia 1
 3. si; attenzione a usare le funzioni corrette per manipolare gli array aggiustabili.
