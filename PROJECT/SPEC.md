@@ -4,13 +4,15 @@
 
 # “Single Source Shortest Paths”
 
+Marco Antoniotti, Claudio Ferretti, Fabio Sartori
+
 # Consegna: sabato 28 febbraio 2026, ore 23:59 GMT+1 Time
 
 # Introduzione
 
-Calcolare il percorso più breve da un punto a un altro di una mappa^1 è un problema più che noto. Vi sono diversi algoritmi in grado di risolvere questo problema, noto in letteratura come il “_Single Source Shortest Path Problem_” (SSSP Problem, cfr., [CLR+09] capitolo 24).
+Calcolare il percorso più breve da un punto a un altro di una mappa[^1] è un problema più che noto. Vi sono diversi algoritmi in grado di risolvere questo problema, noto in letteratura come il “_Single Source Shortest Path Problem_” (SSSP Problem, cfr., [CLR+09] capitolo 24).
 
-Lo scopo di questo progetto è l’implementazione dell’algoritmo di Dijkstra (cfr., [CLR+09] 24.3), che risolve il problema SSSP per _grafi diretti_ e _connessi_ con distanze tra vertici non negative^2.
+Lo scopo di questo progetto è l’implementazione dell’algoritmo di Dijkstra (cfr., [CLR+09] 24.3), che risolve il problema SSSP per _grafi diretti_ e _connessi_ con distanze tra vertici non negative[^2].
 
 Per procedere all’implementazione di quest’algoritmo è necessario – e, di fatto, è la parte principale del progetto – produrre un’implementazione di un MINHEAP (o MINPRIORITYQUEUE).
 
@@ -40,15 +42,15 @@ pos(w, 1, 34) .
 ...
 ```
 
-(^1) Ad esempio, calcolare la distanza tra Porta Ludovica e Piazza Napoli a Milano (a meno di trovarsi in un racconto di Umberto Eco).
+[^1]: Ad esempio, calcolare la distanza tra Porta Ludovica e Piazza Napoli a Milano (a meno di trovarsi in un racconto di Umberto Eco).
 
-(^2) In realtà, il vero vincolo è che non esistano cicli nel grafo dove la somma dei pesi degli archi sia negativa; per il progetto assumiamo che tutti i pesi siano maggiori o uguali a 0.
+[^2]: In realtà, il vero vincolo è che non esistano cicli nel grafo dove la somma dei pesi degli archi sia negativa; per il progetto assumiamo che tutti i pesi siano maggiori o uguali a 0.
 
 Una volta scelta una rappresentazione in memoria di un grafo (_diretto_) è semplice manipolarlo in Prolog e costruire delle API che ci permettono di costruire algoritmi più complessi, quali l’algoritmo di Dijkstra per la soluzione del problema SSSP.
 
 ## Interfaccia Prolog per la manipolazione di grafi
 
-L’interfaccia richiesta è descritta nel seguito. Si noti come ogni predicato mette in relazione un identificatore speciale che denota un particolare grafo. Si noti anche che tutti i predicati richiesti presumono l’utilizzo delle primitive di manipolazione della base di dati Prolog: **assert**, **retractall** e **retract** in particolare^3.
+L’interfaccia richiesta è descritta nel seguito. Si noti come ogni predicato mette in relazione un identificatore speciale che denota un particolare grafo. Si noti anche che tutti i predicati richiesti presumono l’utilizzo delle primitive di manipolazione della base di dati Prolog: **assert**, **retractall** e **retract** in particolare[^3].
 
 ```prolog
 new_graph(G) .
@@ -92,7 +94,7 @@ Aggiunge il vertice V nella base-dati Prolog. N.B. si richiede che il predicato 
 vertices(G, Vs) .
 ```
 
-Questo predicato è vero quanto Vs è una lista contenente tutti i vertici di G^4.
+Questo predicato è vero quanto Vs è una lista contenente tutti i vertici di G[^4].
 
 ```prolog
 list_vertices(G) .
@@ -104,7 +106,7 @@ Questo predicato stampa alla console dell’interprete Prolog una lista dei vert
 new_arc(G, U, V, Weight) .
 ```
 
-Aggiunge un arco del grafo G alla base dati Prolog; il peso è un numero qualunque non-negativo^5. N.B. è richiesto che il predicato che rappresenta gli archi, da aggiungere alla base-dati Prolog, sia **arc(G, U, V, Weight)**. Per comodità potete anche costruire una versione **new_arc/3** così definita:
+Aggiunge un arco del grafo G alla base dati Prolog; il peso è un numero qualunque non-negativo[^5]. N.B. è richiesto che il predicato che rappresenta gli archi, da aggiungere alla base-dati Prolog, sia **arc(G, U, V, Weight)**. Per comodità potete anche costruire una versione **new_arc/3** così definita:
 
 ```prolog
 new_arc(G, U, V) :- new_arc(G, U, V, 1) .
@@ -122,11 +124,11 @@ neighbors(G, V, Ns) .
 
 Questo predicato è vero quando **V** è un vertice di **G** e **Ns** è una lista contenente gli archi, **arc(G, V, N, W)**, che portano ai vertici **N** immediatamente raggiungibili da **V**.
 
-(^3) Attenzione: i predicati di manipolazione della base-dati Prolog possono lasciare delle alternative negli stack di esecuzione; in questo caso potrebbe essere che il sistema Prolog possa generare delle soluzioni extra. Cercate di evitarle.
+[^3]: Attenzione: i predicati di manipolazione della base-dati Prolog possono lasciare delle alternative negli stack di esecuzione; in questo caso potrebbe essere che il sistema Prolog possa generare delle soluzioni extra. Cercate di evitarle.
 
-(^4) Il predicato standard **findall/3** vi sarà utile in questo e altri casi.
+[^4]: Il predicato standard **findall/3** vi sarà utile in questo e altri casi.
 
-(^5) I pesi negativi sono problematici per gli algoritmi di base di manipolazione grafi.
+[^5]: I pesi negativi sono problematici per gli algoritmi di base di manipolazione grafi.
 
 
 ```prolog
@@ -141,7 +143,7 @@ list_graph(G) .
 
 Questo predicato stampa alla console dell’interprete Prolog una lista dei vertici e degli archi del grafo **G**.
 
-## SSSP in Prolog
+# SSSP in Prolog
 
 La soluzione del problema SSSP con l’algoritmo di Dijkstra dovrà essere implementata mediante i predicati seguenti. I predicati più delicati da implementare sono quelli che modificano lo stato della base-dati del Prolog; di fatto, si tratta di implementare una modifica dello “stato” della memoria del sistema. L’API per la soluzione del problema SSSP è la seguente.
 
@@ -274,7 +276,7 @@ Il predicato **insert/3** è vero quando l’elemento **V** è inserito nello he
 extract(H, K, V) .
 ```
 
-Il predicato **extract/3** è vero quando la coppia **K**, **V** con **K** minima, è rimossa dallo heap **H**. Naturalmente, lo heap **H** dovrà essere ristrutturato in modo da mantenere la proprietà che **head(H, HK, HV)** sia vero per **HK** minimo e che la “heap prosperty” sia mantenuta ad ogni nodo dello heap.
+Il predicato **extract/3** è vero quando la coppia **K**, **V** con **K** minima, è rimossa dallo heap **H**. Naturalmente, lo heap **H** dovrà essere ristrutturato in modo da mantenere la proprietà che **head(H, HK, HV)** sia vero per **HK** minimo e che la “heap property” sia mantenuta ad ogni nodo dello heap.
 
 ```prolog
 modify_key(H, NewKey, OldKey, V) .
@@ -292,13 +294,13 @@ Il consiglio è di implementare la libreria MINHEAP, e di assicurarsi che funzio
 
 # Common Lisp
 
-L’implementazione in Common Lisp richiede, come immaginabile, l’utilizzo di assegnamenti per modificare lo stato del sistema^6.
+L’implementazione in Common Lisp richiede, come immaginabile, l’utilizzo di assegnamenti per modificare lo stato del sistema[^6].
 
 ## Grafi in Common Lisp
 
 Vi sono diversi modi di rappresentare i grafi in Common Lisp. Naturalmente è possibile adottare le rappresentazioni standard a _lista di adiacenza_ (_adjacency list_) o a _matrice di adiacenza_ (_adjacency matrix_), ma si cercherà di adottare una rappresentazione ibrida più simile alla rappresentazione Prolog per, si spera, semplificare il lavoro.
 
-L’idea principale è di avere dei vertici rappresentati da _atomi_ (_simboli_ e _numeri interi_) e di definire delle _hash-tables_ che useranno questi atomi come chiavi. De facto, queste hash-tables si comporteranno come la knowledge base di Prolog^7.
+L’idea principale è di avere dei vertici rappresentati da _atomi_ (_simboli_ e _numeri interi_) e di definire delle _hash-tables_ che useranno questi atomi come chiavi. De facto, queste hash-tables si comporteranno come la knowledge base di Prolog[^7].
 
 Di conseguenza assumiamo di avere le seguenti hash-tables (si vedrà dopo come crearle e manipolarle).
 
@@ -322,16 +324,15 @@ Le hash-tables sono strutture dati primitive in Common Lisp. Le funzioni che le 
 - **maphash**: come **mapcar** ma prende una funzione di due argomenti (uno per la chiave ed uno per il valore) ed una hash-table ed applica la funzione ad ognuna delle coppie.
 
 Per modificare il contenuto di una hash-table, oltre a **clrhash**, si usa l’operatore di assegnamento, **setf** , in congiunzione con **gethash**.
-l
 La seconda parte del capitolo “_Collections_” di “_Practical Common Lisp_” di Seibel contiene un’altra introduzione alle hash-tables [qua](http://www.gigamonkeys.com/book/collections.html).
 
-(^6) É possibile costruire queste strutture dati in modo funzionale e senza effetti collaterali, ma risulta tanto complicato quanto elegante.
+[^6]: É possibile costruire queste strutture dati in modo funzionale e senza effetti collaterali, ma risulta tanto complicato quanto elegante.
 
-(^7) Non dovrebbe sfuggire l’analogia con le “tabelle” di una base di dati relazionale.
+[^7]: Non dovrebbe sfuggire l’analogia con le “tabelle” di una base di dati relazionale.
 
 ## Le Hash Tables dei grafi in Common Lisp per il progetto
 
-Tornando alle hash-tables per il progetto, esse vanno definite nel seguente modo^8.
+Tornando alle hash-tables per il progetto, esse vanno definite nel seguente modo[^8].
 
 ```lisp
 (defparameter *vertices* (make-hash-table :test #'equal))
@@ -408,7 +409,7 @@ Aggiunge un nuovo vertice **vertex-id** al grafo **graph-id**. Notate come la ra
     (list 'vertex graph-id vertex-id)))
 ```
 
-(^8) NB. Ogni volta che si ricarica il codice, le suddette hash-tables sono re-instaziate e tutto quello che contenevano prima, garbage-collected. È un effetto collaterale di **defparameter**.
+[^8]: NB. Ogni volta che si ricarica il codice, le suddette hash-tables sono re-instaziate e tutto quello che contenevano prima, garbage-collected. È un effetto collaterale di **defparameter**.
 
 **graph-vertices** graph-id → vertex-rep-list
 
@@ -579,7 +580,7 @@ Quindi una heap-rep è una lista (potete anche usare altri oggetti Common Lisp) 
 
 Ne consegue che anche le funzioni di “accesso” ad uno heap-rep sono le ovvie: **heap-id**, **heap-size** e **heap-actual-heap**.
 
-Notate che si usa il “nome” dello heap per recuperarlo^9 Notate che nella hash table **\*heaps\*** si mantengono le “heap-reps” indicizzate con il nome dello heap.
+Notate che si usa il “nome” dello heap per recuperarlo[^9] Notate che nella hash table **\*heaps\*** si mantengono le “heap-reps” indicizzate con il nome dello heap.
 
 _Nota_: potete usare **defstruct** al posto di rappresentare uno heap come una lista ```(heap id N <array>)```; l’importante è che l’interfaccia sia rispettata.
 
@@ -599,7 +600,7 @@ Questo predicato è vero quando lo heap heap-id contiene almeno un elemento.
 
 Un MINHEAP mantiene delle associazioni tra chiavi **K** e valori **V**. L’implementazione degli heap in Common Lisp è la solita basata su un array monodimensionale che si può trovare, ad esempio, in [CLR+09] e [SW11].
 
-(^9) Ciò non è strettamente necessario, ma rende, come si è detto, il codice più simile a quello Prolog.
+[^9]: Ciò non è strettamente necessario, ma rende, come si è detto, il codice più simile a quello Prolog.
 
 **heap-head** heap-id → (K V)
 
@@ -664,7 +665,7 @@ Come sempre, valgono le direttive standard (reperibili sulla piattaforma Moodle)
 
 Ogni file deve contenere all'inizio un commento con il nome e matricola di ogni componente del gruppo. Ogni persona deve consegnare un elaborato, anche quando ha lavorato in gruppo.
 
-_Il termine ultimo della consegna sulla piattaforma Moodle è sabato 28 febbraio, 2026, ore 23:55 GMT+Time._
+_Il termine ultimo della consegna sulla piattaforma Moodle è sabato 28 febbraio, 2026, ore 23:55 GMT+1 Time._
 
 # ATTENZIONE!
 
@@ -680,6 +681,6 @@ Il mancato rispetto dei nomi indicati per funzioni e predicati, o anche delle st
 
 # Riferimenti
 
-[CLR+09] Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein, _Introduction to Algorithms_ , Third Edition, The MIT Press, 2009 (Capitoli 6 e 24.3)
+[CLR+09] Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein, _Introduction to Algorithms_, Third Edition, The MIT Press, 2009 (Capitoli 6 e 24.3)
 
-[SW11] Robert Sedgewick, Kevin Wayne, _Algorithms_ , Fourth Edition, Addison Wesley Professional, 2011 (Capitoli 2.4 [http://algs4.cs.princeton.edu/24pq/](http://algs4.cs.princeton.edu/24pq/) e 4. [http://algs4.cs.princeton.edu/44sp/)](http://algs4.cs.princeton.edu/44sp/))
+[SW11] Robert Sedgewick, Kevin Wayne, _Algorithms_, Fourth Edition, Addison Wesley Professional, 2011 (Capitoli 2.4 [http://algs4.cs.princeton.edu/24pq/](http://algs4.cs.princeton.edu/24pq/) e 4.4 [http://algs4.cs.princeton.edu/44sp/](http://algs4.cs.princeton.edu/44sp/))
